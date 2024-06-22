@@ -10,5 +10,7 @@ namespace API.Data
         }
 
         public DbSet<Manager> Managers { get; set; }
+        
+        public DbSet<Department> Departments { get; set; }
     }
 }
