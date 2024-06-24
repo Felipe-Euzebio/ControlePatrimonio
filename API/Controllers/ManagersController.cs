@@ -46,7 +46,7 @@ namespace API.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> UpdateManager(Manager manager)
+        public async Task<ActionResult> UpdateManager(Manager manager)
         {
             var managerEntity = await _context.Managers.FindAsync(manager.ManagerId);
 
@@ -63,7 +63,7 @@ namespace API.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteManager(int id)
+        public async Task<ActionResult> DeleteManager(int id)
         {
             var manager = await _context.Managers.FindAsync(id);
 
