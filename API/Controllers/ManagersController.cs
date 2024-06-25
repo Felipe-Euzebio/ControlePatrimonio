@@ -1,5 +1,6 @@
 using API.Data;
 using API.Entities;
+using API.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,9 +16,13 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<Manager>>> GetManagers()
+        public async Task<ActionResult<List<Manager>>> GetManagers(string orderBy)
         {
-            return await _context.Managers.ToListAsync();
+            var query = _context.Managers
+                .Sort(orderBy)
+                .AsQueryable();
+
+            return await query.ToListAsync();
         }
 
         [HttpGet("{id}", Name = "GetManager")]
