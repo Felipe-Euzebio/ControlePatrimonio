@@ -16,10 +16,11 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<Manager>>> GetManagers(string orderBy)
+        public async Task<ActionResult<List<Manager>>> GetManagers(string orderBy, string searchTerm)
         {
             var query = _context.Managers
                 .Sort(orderBy)
+                .Search(searchTerm)
                 .AsQueryable();
 
             return await query.ToListAsync();

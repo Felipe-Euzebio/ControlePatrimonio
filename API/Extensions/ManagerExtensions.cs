@@ -19,5 +19,14 @@ namespace API.Extensions
 
             return query;
         }
+
+        public static IQueryable<Manager> Search(this IQueryable<Manager> query, string searchTerm)
+        {
+            if (string.IsNullOrEmpty(searchTerm)) return query;
+
+            var lowerCaseSearchTerm = searchTerm.Trim().ToLower();
+
+            return query.Where(m => m.ManagerName.ToLower().Contains(lowerCaseSearchTerm));
+        }
     }
 }
