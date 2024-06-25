@@ -1,8 +1,8 @@
 using API.Data;
 using API.Entities;
 using API.Extensions;
+using API.RequestHelpers;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace API.Controllers
 {
@@ -16,14 +16,19 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<Manager>>> GetManagers(string orderBy, string searchTerm)
+        public async Task<ActionResult<PagedList<Manager>>> GetManagers([FromQuery]QueryParams queryParams)
         {
             var query = _context.Managers
-                .Sort(orderBy)
-                .Search(searchTerm)
+                .Sort(queryParams.OrderBy)
+                .Search(queryParams.SearchTerm)
                 .AsQueryable();
 
-            return await query.ToListAsync();
+            var managers = await PagedList<Manager>
+                .ToPagedList(query, queryParams.PageNumber, queryParams.PageSize);
+
+            Response.AddPaginationHeader(managers.PaginationMetaData);
+
+            return managers;
         }
 
         [HttpGet("{id}", Name = "GetManager")]
