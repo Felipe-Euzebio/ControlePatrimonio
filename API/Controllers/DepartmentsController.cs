@@ -1,6 +1,8 @@
 using API.Data;
 using API.DTOs;
 using API.Entities;
+using API.Extensions;
+using API.RequestHelpers;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -19,15 +21,28 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<Department>>> GetDepartments()
+        public async Task<ActionResult<List<Department>>> GetDepartments([FromQuery]QueryParams queryParams)
         {
-            return await _context.Departments.ToListAsync();
+            var query = _context.Departments
+                .Include(d => d.Manager)
+                .Sort(queryParams.OrderBy)
+                .Search(queryParams.SearchTerm)
+                .AsQueryable();
+
+            var departments = await PagedList<Department>
+                .ToPagedList(query, queryParams.PageNumber, queryParams.PageSize);
+
+            Response.AddPaginationHeader(departments.PaginationMetaData);
+
+            return departments;
         }
 
         [HttpGet("{id}", Name = "GetDepartment")]
         public async Task<ActionResult<Department>> GetDepartment(int id)
         {
-            var department = await _context.Departments.FindAsync(id);
+            var department = await _context.Departments
+                .Include(d => d.Manager)
+                .FirstOrDefaultAsync(d => d.DepartmentId == id);
 
             if (department == null) return NotFound();
 
