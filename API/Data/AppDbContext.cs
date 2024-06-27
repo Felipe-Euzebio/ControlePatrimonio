@@ -12,5 +12,16 @@ namespace API.Data
         public DbSet<Manager> Managers { get; set; }
         
         public DbSet<Department> Departments { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<Department>()
+                .HasOne(d => d.Manager)
+                .WithMany()
+                .HasForeignKey(d => d.ManagerId)
+                .OnDelete(DeleteBehavior.Restrict); // Prevent deletion of Manager if associated with Department
+        }
     }
 }
