@@ -86,9 +86,7 @@ namespace API.Controllers
                 return BadRequest(new ProblemDetails { Title = "Manager not found" });
             }
 
-            var updatedDepartment = _mapper.Map(updateDepartmentDTO, department);
-
-            updatedDepartment.Manager = manager;
+            _mapper.Map(updateDepartmentDTO, department);
 
             var result = await _context.SaveChangesAsync() > 0;
 
