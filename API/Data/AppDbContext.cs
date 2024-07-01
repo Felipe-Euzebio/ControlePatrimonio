@@ -1,9 +1,11 @@
 using API.Entities;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace API.Data
 {
-    public class AppDbContext : DbContext
+    public class AppDbContext : IdentityDbContext<User>
     {
         public AppDbContext(DbContextOptions options) : base(options)
         {
@@ -22,6 +24,12 @@ namespace API.Data
                 .WithMany()
                 .HasForeignKey(d => d.ManagerId)
                 .OnDelete(DeleteBehavior.Restrict); // Prevent deletion of Manager if associated with Department
+
+            modelBuilder.Entity<IdentityRole>()
+                .HasData(
+                    new IdentityRole {Name = "Admin", NormalizedName = "ADMIN"},
+                    new IdentityRole {Name = "Member", NormalizedName = "MEMBER"}
+                ); 
         }
     }
 }
