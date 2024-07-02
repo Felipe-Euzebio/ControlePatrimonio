@@ -10,11 +10,9 @@ namespace API.Entities
         public int DepartmentId { get; set; }
         public string DepartmentName { get; set; }
 
-        // Foreign Key for Manager
         [JsonIgnore]
         public int ManagerId { get; set; }
 
-        [ForeignKey("ManagerId")]
         public Manager Manager { get; set; }
     }
 }

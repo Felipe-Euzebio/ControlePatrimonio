@@ -1,6 +1,8 @@
 using API.Data;
+using API.Entities;
 using API.Middleware;
 using API.RequestHelpers;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,6 +18,14 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<AppDbContext>(options => {
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
+
+builder.Services.AddIdentityCore<User>()
+    .AddRoles<IdentityRole>()
+    .AddEntityFrameworkStores<AppDbContext>();
+
+builder.Services.AddAuthentication();
+
+builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
@@ -36,12 +46,13 @@ app.MapControllers();
 
 var scope = app.Services.CreateScope();
 var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+var userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
 var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
 
 try
 {
-    context.Database.Migrate();
-    DbInitializer.Initialize(context);
+    await context.Database.MigrateAsync();
+    await DbInitializer.Initialize(context, userManager);
 }
 catch (Exception ex)
 {
