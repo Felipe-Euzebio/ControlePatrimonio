@@ -51,6 +51,8 @@ builder.Services.AddDbContext<AppDbContext>(options => {
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
+builder.Services.AddCors();
+
 builder.Services.AddIdentityCore<User>(opt => 
 {
     opt.User.RequireUniqueEmail = true;
@@ -89,6 +91,11 @@ if (app.Environment.IsDevelopment())
         c.ConfigObject.AdditionalItems.Add("persistAuthorization", "true");
     });
 }
+
+app.UseCors(opt => 
+{
+    opt.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:5173");
+});
 
 app.UseHttpsRedirection();
 
