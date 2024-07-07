@@ -1,6 +1,7 @@
 import { Container, createTheme, CssBaseline, ThemeProvider } from "@mui/material"
 import Header from "./Header"
 import { useState } from "react";
+import { Outlet } from "react-router-dom";
 
 function App() {
   const [darkMode, setDarkMode] = useState(false);
@@ -25,7 +26,7 @@ function App() {
       <CssBaseline />
       <Header darkMode={darkMode} handleThemeChange={handleThemeChange}/>
       <Container>
-        <h1>Hello Vite + React!</h1>
+        <Outlet />
       </Container>
     </ThemeProvider>
   )
