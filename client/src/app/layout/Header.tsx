@@ -33,7 +33,10 @@ export default function Header({ darkMode, handleThemeChange }: Props) {
                         variant="h6"
                         component={NavLink}
                         to="/"
-                        sx={navStyles}
+                        sx={{
+                            ...navStyles,
+                            color: "#fff !important",
+                        }}
                     >
                         Controle de Patrimônio
                     </Typography>
@@ -41,10 +44,10 @@ export default function Header({ darkMode, handleThemeChange }: Props) {
                     <List sx={{ display: "flex" }}>
                         <ListItem
                             component={NavLink}
-                            to="/patrimonies"
+                            to="/users"
                             sx={navStyles}
                         >
-                            Patrimônios
+                            Usuários
                         </ListItem>
                     </List>
                 </Box>
