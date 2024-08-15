@@ -25,7 +25,7 @@ function App() {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <Header darkMode={darkMode} handleThemeChange={handleThemeChange}/>
-      <Container>
+      <Container sx={{ mt: 4 }}>
         <Outlet />
       </Container>
     </ThemeProvider>
