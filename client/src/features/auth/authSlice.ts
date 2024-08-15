@@ -1,15 +1,15 @@
 import { createAsyncThunk, createSlice, isAnyOf } from "@reduxjs/toolkit";
-import { User } from "../../models/user";
+import { User } from "../../app/models/user";
 import { FieldValues } from "react-hook-form";
-import agent from "../../api/agent";
-import { router } from "../../router/Routes"
+import agent from "../../app/api/agent";
+import { router } from "../../app/router/Routes"
 import { toast } from 'react-toastify';
 
-interface UserState {
+interface AuthState {
     user: User | null;
 }
 
-const initialState: UserState = {
+const initialState: AuthState = {
     user: null
 }
 
@@ -45,7 +45,7 @@ export const fetchCurrentUser = createAsyncThunk<User>(
     }
 )
 
-export const userSlice = createSlice({
+export const authSlice = createSlice({
     name: 'user',
     initialState,
     reducers: {
@@ -79,5 +79,5 @@ export const userSlice = createSlice({
     })
 })
 
-export const { signOut, setUser } = userSlice.actions;
+export const { signOut, setUser } = authSlice.actions;
     

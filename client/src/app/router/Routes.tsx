@@ -4,8 +4,8 @@ import HomePage from "../../features/home/HomePage";
 import UsersPage from "../../features/users/UsersPage";
 import UserDetails from "../../features/users/UserDetails";
 import RequireAuth from "./RequireAuth";
-import Login from "../../features/users/Login";
-import Register from "../../features/users/Register";
+import Login from "../../features/auth/Login";
+import Register from "../../features/auth/Register";
 import ServerError from "../errors/ServerError";
 import NotFound from "../errors/NotFound";
 
